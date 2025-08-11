@@ -3,3 +3,4 @@ Flask-SQLAlchemy==3.1.1
 psycopg2-binary==2.9.7
 Werkzeug==2.3.7
 python-dotenv
+pytz
