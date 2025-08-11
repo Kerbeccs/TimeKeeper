@@ -104,7 +104,10 @@ def indian_date_filter(utc_datetime):
     return 'N/A'
 
 # Routes
-
+@app.route('/')
+def index():
+    # This redirects the user to the employee portal page
+    return redirect(url_for('employee_portal'))
 
 @app.route('/employee', methods=['GET', 'POST'])
 def employee_portal():
