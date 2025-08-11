@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+
+{% block title %}HR Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    /* Custom styles for a modern, colorful HR Dashboard */
+    :root {
+        --primary-color: #ff5dec; /* A vibrant, modern purple-blue */
+        --secondary-color: #ff6b6b; /* A soft red for danger/logout */
+        --accent-color: #48c78e; /* A cheerful green for active status */
+        --background-color: #f0f4f8; /* A light, clean grey background */
+        --card-background: #ffffff; /* White for cards */
+        --text-color: #333333; /* Dark grey for main text */
+        --subtle-text-color: #6c757d; /* Lighter grey for muted text */
+        --border-radius: 12px;
+        --box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        --hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-color);
+        background-color: var(--background-color);
+    }
+
+    .dashboard-container {
+        padding: 3rem;
+    }
+
+    h2 {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-bottom: 3px solid var(--primary-color);
+        padding-bottom: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .card {
+        border: none;
+        box-shadow: var(--box-shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: var(--border-radius);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+    }
+
+    .card-header {
+        background-image: linear-gradient(135deg, var(--primary-color) 0%, #a17cfc 100%);
+        color: white;
+        border-bottom: none;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        padding: 1.5rem;
+    }
+
+    .card-header h4 {
+        margin: 0;
+        font-weight: 500;
+    }
+
+    .card-body {
+        background-color: var(--card-background);
+        padding: 2rem;
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+
+    .table {
+        margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .table thead th {
+        background-color: var(--background-color);
+        border-bottom: 2px solid var(--primary-color);
+        font-weight: 600;
+        color: var(--text-color);
+        padding: 1rem;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9fc;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #eef3f8;
+    }
+
+    .status-active {
+        color: white;
+        background-color: var(--accent-color);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .status-inactive, .text-muted {
+        color: var(--subtle-text-color);
+    }
+
+    .status-completed {
+        color: white;
+        background-color: var(--secondary-color);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .btn-primary {
+   color: #ffffff; /* White text */
+    border-color: #ffffff; /* White border */
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+    background-color: #ffffff; /* White background on hover */
+    color: var(--primary-color); /* Blue text on hover */
+    transform: translateY(-2px);
+    }
+
+    .btn-outline-danger {
+        color: var(--secondary-color);
+        border-color: var(--secondary-color);
+        border-radius: 30px;
+        padding: 0.6rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: var(--secondary-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .btn-outline-secondary {
+        color: var(--subtle-text-color);
+        border-color: var(--subtle-text-color);
+        border-radius: 30px;
+        padding: 0.6rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: var(--subtle-text-color);
+        color: white;
+    }
+
+    .btn-outline-primary {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Modal Styling */
+    .modal-header {
+        background-image: linear-gradient(135deg, var(--primary-color) 0%, #a17cfc 100%);
+        color: white;
+        border-bottom: none;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        color: white;
+    }
+
+    .modal-content {
+        border-radius: var(--border-radius);
+    }
+
+</style>
+
+<div class="dashboard-container">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2>HR Dashboard</h2>
+        <a href="{{ url_for('hr_logout') }}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-header">
+            <h4>Currently Active Employees ({{ active_employees|length }})</h4>
+        </div>
+        <div class="card-body">
+            {% if active_employees %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone Number</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for employee in active_employees %}
+                            <tr>
+                                <td>{{ employee.name }}</td>
+                                <td>{{ employee.phone_number }}</td>
+                                <td><span class="status-active">Active</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No employees currently active.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-header">
+            <h4>Filters</h4>
+        </div>
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" value="{{ selected_date or '' }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="name" class="form-label">Employee Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ selected_name or '' }}" placeholder="Search by name...">
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">Filter</button>
+                    <a href="{{ url_for('hr_dashboard') }}" class="btn btn-outline-secondary">Clear</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4>Time Logs ({{ time_logs|length }} records)</h4>
+            {% if unique_dates %}
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Export by Date
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for date in unique_dates %}
+                            <li><a class="dropdown-item export-date" href="#" data-date="{{ date }}">{{ date }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            {% if time_logs %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Phone Number</th>
+                                <th>Login Time</th>
+                                <th>Logout Time</th>
+                                <th>Total Hours</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for time_log, employee in time_logs %}
+                            <tr>
+                                <td>{{ time_log.date }}</td>
+                                <td>{{ employee.name }}</td>
+                                <td>{{ employee.phone_number }}</td>
+                                <td>{{ time_log.login_time.strftime('%H:%M:%S') if time_log.login_time else '' }}</td>
+                                <td>
+                                    {% if time_log.logout_time %}
+                                        {{ time_log.logout_time.strftime('%H:%M:%S') }}
+                                    {% else %}
+                                        <span class="status-active">Still working</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if time_log.total_hours > 0 %}
+                                        {{ "%.2f"|format(time_log.total_hours) }}h
+                                    {% else %}
+                                        <span class="status-active">In progress</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if employee.is_logged_in %}
+                                        <span class="status-active">Active</span>
+                                    {% else %}
+                                        <span class="status-completed">Completed</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No time logs found for the selected criteria.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Export Data for <span id="exportDate"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="exportContent">Loading...</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="downloadJson">Download JSON</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const exportLinks = document.querySelectorAll('.export-date');
+    const exportModal = new bootstrap.Modal(document.getElementById('exportModal'));
+    let exportData = null;
+
+    exportLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const date = this.getAttribute('data-date');
+            
+            document.getElementById('exportDate').textContent = date;
+            document.getElementById('exportContent').innerHTML = 'Loading...';
+            
+            fetch(`/export-date/${date}`)
+                .then(response => response.json())
+                .then(data => {
+                    exportData = data;
+                    displayExportData(data);
+                    exportModal.show();
+                })
+                .catch(error => {
+                    document.getElementById('exportContent').innerHTML = `<div class="alert alert-danger">Error loading data: ${error}</div>`;
+                    exportModal.show();
+                });
+        });
+    });
+
+    function displayExportData(data) {
+        let html = `
+            <div class="mb-3">
+                <strong>Total Records:</strong> ${data.total_records}
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Login</th>
+                            <th>Logout</th>
+                            <th>Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        data.data.forEach(record => {
+            html += `
+                <tr>
+                    <td>${record.name}</td>
+                    <td>${record.phone_number}</td>
+                    <td>${record.login_time}</td>
+                    <td>${record.logout_time}</td>
+                    <td>${record.total_hours}h</td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody></table></div>';
+        document.getElementById('exportContent').innerHTML = html;
+    }
+
+    document.getElementById('downloadJson').addEventListener('click', function() {
+        if (exportData) {
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `time_logs_${exportData.date}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+    });
+});
+</script>
+{% endblock %}

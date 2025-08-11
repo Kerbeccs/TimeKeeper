@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-custom">
+    <div class="main-content">
+        <!-- Header Section -->
+        <div class="header-section text-center mb-5">
+            <div class="logo-container mb-4">
+                <div class="logo-3d">
+                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="url(#gradient)" stroke-width="2"/>
+                        <path d="M12 6V12L16 14" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#6a4c93"/>
+                                <stop offset="100%" style="stop-color:#8b5a92"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="main-title mb-3">Employee Time Tracking System</h1>
+            <p class="lead-text">Streamlined attendance management for modern workplaces</p>
+        </div>
+        
+        <!-- Portal Selection Cards -->
+        <div class="portal-grid">
+            <!-- Employee Portal Card -->
+            <div class="portal-card employee-card card-3d">
+                <div class="card-icon">
+                    <div class="icon-3d-container">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Employee Portal</h3>
+                    <p class="card-description">Clock in/out, view attendance records, and manage your time tracking</p>
+                    <ul class="feature-list">
+                        <li><span class="check-icon">✓</span> Quick Login/Logout</li>
+                        <li><span class="check-icon">✓</span> Time Tracking</li>
+                        <li><span class="check-icon">✓</span> Personal Records</li>
+                    </ul>
+                </div>
+                <a href="{{ url_for('employee_portal') }}" class="portal-btn employee-btn btn-3d">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2">
+                        <path d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 17L15 12L10 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Access Employee Portal
+                </a>
+            </div>
+            
+            <!-- HR Portal Card -->
+            <div class="portal-card hr-card card-3d">
+                <div class="card-icon">
+                    <div class="icon-3d-container">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">HR Dashboard</h3>
+                    <p class="card-description">Comprehensive employee management and attendance oversight</p>
+                    <ul class="feature-list">
+                        <li><span class="check-icon">✓</span> Employee Management</li>
+                        <li><span class="check-icon">✓</span> Attendance Reports</li>
+                        <li><span class="check-icon">✓</span> Analytics Dashboard</li>
+                    </ul>
+                </div>
+                <a href="{{ url_for('hr_login') }}" class="portal-btn hr-btn btn-3d">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2">
+                        <path d="M12 1C8.676 1 6 3.676 6 7V8C4.343 8 3 9.343 3 11V20C3 21.657 4.343 23 6 23H18C19.657 23 21 21.657 21 20V11C21 9.343 19.657 8 18 8V7C18 3.676 15.324 1 12 1Z" fill="currentColor"/>
+                    </svg>
+                    Access HR Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <!-- Footer Info -->
+        <div class="footer-info text-center mt-5">
+            <div class="security-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22S8 18 8 12V7L12 5L16 7V12C16 18 12 22 12 22Z" stroke="#6a4c93" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 12L11 14L15 10" stroke="#6a4c93" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Secure • Reliable • Professional</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.container-custom {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6a4c93 100%);
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.main-content {
+    max-width: 1000px;
+    width: 100%;
+}
+
+.header-section {
+    color: white;
+}
+
+.logo-container {
+    animation: float 3s ease-in-out infinite;
+    perspective: 1000px;
+}
+
+.logo-3d {
+    transform-style: preserve-3d;
+    animation: rotate3d 8s infinite linear;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes rotate3d {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+}
+
+.main-title {
+    font-size: 3rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    background: linear-gradient(45deg, #ffffff, #f0f0f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.main-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #28a745, #20c997);
+    border-radius: 2px;
+}
+
+.lead-text {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.9);
+    font-weight: 300;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.portal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.portal-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.portal-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #6a4c93, #8b5a92);
+}
+
+.portal-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+}
+
+.card-icon {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #6a4c93;
+    perspective: 1000px;
+}
+
+.icon-3d-container {
+    display: inline-block;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+}
+
+.portal-card:hover .icon-3d-container {
+    transform: rotateY(15deg) rotateX(15deg);
+}
+
+.card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.card-description {
+    color: #666;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.feature-list li {
+    padding: 8px 0;
+    color: #555;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.check-icon {
+    color: #28a745;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.portal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 15px 30px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.employee-btn {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+
+.employee-btn:hover {
+    background: linear-gradient(135deg, #218838, #1ea085);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4);
+    color: white;
+}
+
+.hr-btn {
+    background: linear-gradient(135deg, #6a4c93, #8b5a92);
+    color: white;
+}
+
+.hr-btn:hover {
+    background: linear-gradient(135deg, #5a3f7a, #7a4f81);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(106, 76, 147, 0.4);
+    color: white;
+}
+
+.footer-info {
+    color: rgba(255,255,255,0.9);
+}
+
+.security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.1);
+    padding: 12px 24px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+
+.security-badge:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .portal-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .portal-card {
+        padding: 30px 25px;
+    }
+    
+    .main-title {
+        font-size: 2.2rem;
+    }
+    
+    .lead-text {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-custom {
+        padding: 20px 15px;
+    }
+    
+    .portal-card {
+        padding: 25px 20px;
+    }
+    
+    .main-title {
+        font-size: 1.8rem;
+    }
+    
+    .card-icon {
+        margin-bottom: 20px;
+    }
+    
+    .portal-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+}
+</style>
+{% endblock %}

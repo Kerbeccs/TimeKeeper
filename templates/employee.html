@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Employee Portal{% endblock %}
+
+{% block content %}
+<style>
+    /* Smooth fade-in animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .container-custom {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #74ABE2, #5563DE, #9D50BB);
+        background-size: 400% 400%;
+        animation: gradientShift 12s ease infinite;
+    }
+
+    /* Gradient animation */
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .card {
+        animation: fadeInUp 0.8s ease-out;
+        border-radius: 15px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-success {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-success:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+    }
+</style>
+
+<div class="container-custom d-flex justify-content-center align-items-center">
+    <div class="card border-0 shadow-lg" style="max-width: 500px; width: 100%;">
+        <div class="card-header bg-dark text-white text-center" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+            <h3 class="mb-0">Employee Login/Logout</h3>
+        </div>
+        <div class="card-body p-4 bg-light">
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label fw-bold">Full Name</label>
+                    <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone_number" class="form-label fw-bold">Phone Number</label>
+                    <input type="tel" class="form-control form-control-lg" id="phone_number" name="phone_number" placeholder="e.g., 9876543210" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success btn-lg shadow-sm">Login / Logout</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-muted text-center bg-white" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; font-size: 0.9rem;">
+            <small>Enter your details and click the button to login or logout</small>
+        </div>
+    </div>
+</div>
+{% endblock %}

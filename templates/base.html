@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Employee Tracking System - 3D Interactive Platform{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a1a2e 50%, #16213e 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 3D Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float-random 8s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #17a2b8, #6610f2);
+            border-radius: 30%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #fd7e14, #e83e8c);
+            border-radius: 20%;
+            animation-delay: 4s;
+        }
+
+        .floating-element:nth-child(4) {
+            top: 30%;
+            left: 70%;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #20c997, #28a745);
+            border-radius: 50%;
+            animation-delay: 1s;
+        }
+
+        @keyframes float-random {
+            0%, 100% { 
+                transform: translateY(0px) rotateZ(0deg) scale(1); 
+            }
+            25% { 
+                transform: translateY(-30px) rotateZ(90deg) scale(1.1); 
+            }
+            50% { 
+                transform: translateY(-60px) rotateZ(180deg) scale(0.9); 
+            }
+            75% { 
+                transform: translateY(-30px) rotateZ(270deg) scale(1.1); 
+            }
+        }
+
+        /* 3D Enhanced Navbar */
+        .navbar-3d {
+            background: rgba(13, 27, 42, 0.95) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: navbar-shine 3s infinite;
+        }
+
+        @keyframes navbar-shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .navbar-brand-3d {
+            font-size: 1.8rem !important;
+            font-weight: 900 !important;
+            background: linear-gradient(45deg, #28a745, #20c997, #17a2b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand-3d:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 5px 15px rgba(40, 167, 69, 0.8);
+        }
+
+        .nav-link-3d {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 600 !important;
+            padding: 12px 20px !important;
+            margin: 0 5px !important;
+            border-radius: 25px !important;
+            transition: all 0.3s ease !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-link-3d:hover {
+            color: white !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        }
+
+        .nav-link-3d:hover::before {
+            left: 0;
+        }
+
+        .nav-link-3d i {
+            margin-right: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link-3d:hover i {
+            transform: scale(1.2) rotateY(360deg);
+        }
+
+        /* Enhanced Alert System */
+        .alert-3d {
+            border: none !important;
+            border-radius: 15px !important;
+            backdrop-filter: blur(15px) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+            border-left: 4px solid !important;
+            position: relative;
+            overflow: hidden;
+            animation: alert-slide-in 0.5s ease-out;
+        }
+
+        .alert-success-3d {
+            background: rgba(40, 167, 69, 0.15) !important;
+            color: #d4edda !important;
+            border-left-color: #28a745 !important;
+        }
+
+        .alert-danger-3d {
+            background: rgba(220, 53, 69, 0.15) !important;
+            color: #f8d7da !important;
+            border-left-color: #dc3545 !important;
+        }
+
+        .alert-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: alert-shine 2s infinite;
+        }
+
+        @keyframes alert-slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes alert-shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        /* Container Enhancements */
+        .container-custom {
+            max-width: 600px;
+            margin: 50px auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-container {
+            margin: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: perspective(1000px) rotateX(2deg);
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-container:hover {
+            transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+
+        /* Enhanced Status Indicators */
+        .status-active {
+            color: #28a745 !important;
+            font-weight: bold !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px;
+            background: rgba(40, 167, 69, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .status-active::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #28a745;
+            border-radius: 50%;
+            animation: pulse-green 2s infinite;
+        }
+
+        .status-inactive {
+            color: #dc3545 !important;
+            font-weight: bold !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px;
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .status-inactive::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #dc3545;
+            border-radius: 50%;
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* Enhanced Buttons */
+        .btn-3d {
+            border: none !important;
+            border-radius: 15px !important;
+            padding: 12px 30px !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            position: relative !important;
+            overflow: hidden !important;
+            transition: all 0.3s ease !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        .btn-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.3s ease;
+        }
+
+        .btn-3d:hover::before {
+            left: 100%;
+        }
+
+        .btn-3d:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn-primary-3d {
+            background: linear-gradient(45deg, #007bff, #0056b3) !important;
+            color: white !important;
+        }
+
+        .btn-success-3d {
+            background: linear-gradient(45deg, #28a745, #20c997) !important;
+            color: white !important;
+        }
+
+        .btn-danger-3d {
+            background: linear-gradient(45deg, #dc3545, #c82333) !important;
+            color: white !important;
+        }
+
+        /* Enhanced Cards */
+        .card-3d {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important;
+            transition: all 0.3s ease !important;
+            transform: perspective(1000px) rotateX(5deg);
+        }
+
+        .card-3d:hover {
+            transform: perspective(1000px) rotateX(0deg) translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3) !important;
+        }
+
+        .card-header-3d {
+            background: linear-gradient(45deg, rgba(40, 167, 69, 0.2), rgba(32, 201, 151, 0.2)) !important;
+            border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+            color: white !important;
+            font-weight: 600 !important;
+        }
+
+        .card-body-3d {
+            color: rgba(255,255,255,0.9) !important;
+        }
+
+        /* Loading Spinner */
+        .spinner-3d {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-left: 4px solid #28a745;
+            border-radius: 50%;
+            animation: spin-3d 1s linear infinite;
+        }
+
+        @keyframes spin-3d {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Text Enhancements */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.95);
+        }
+
+        .text-gradient {
+            background: linear-gradient(45deg, #28a745, #20c997, #17a2b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Responsive Enhancements */
+        @media (max-width: 768px) {
+            .container-custom {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+            
+            .dashboard-container {
+                margin: 15px;
+                padding: 20px;
+            }
+            
+            .navbar-brand-3d {
+                font-size: 1.4rem !important;
+            }
+            
+            .nav-link-3d {
+                padding: 8px 15px !important;
+                margin: 2px !important;
+            }
+            
+            .floating-element {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand-3d {
+                font-size: 1.2rem !important;
+            }
+            
+            .dashboard-container {
+                margin: 10px;
+                padding: 15px;
+                border-radius: 15px;
+            }
+            
+            .btn-3d {
+                padding: 10px 20px !important;
+                font-size: 0.9rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <!-- Enhanced 3D Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-3d">
+        <div class="container-fluid">
+            <a class="navbar-brand navbar-brand-3d" href="{{ url_for('index') }}">
+                <i class="fas fa-cube me-2"></i>Employee Tracking 3D
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link nav-link-3d" href="{{ url_for('employee_portal') }}">
+                        <i class="fas fa-user-clock"></i>Employee Portal
+                    </a>
+                    <a class="nav-link nav-link-3d" href="{{ url_for('hr_login') }}">
+                        <i class="fas fa-chart-line"></i>HR Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Enhanced Alert System -->
+    <div class="container-fluid mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-3d {{ 'alert-danger-3d' if category == 'error' else 'alert-success-3d' }} alert-dismissible fade show" role="alert">
+                        <i class="fas {{ 'fa-exclamation-triangle' if category == 'error' else 'fa-check-circle' }} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Enhanced interactive functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Parallax effect for floating elements
+            document.addEventListener('mousemove', function(e) {
+                const elements = document.querySelectorAll('.floating-element');
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                elements.forEach((element, index) => {
+                    const speed = (index + 1) * 0.5;
+                    const x = (mouseX - 0.5) * speed * 50;
+                    const y = (mouseY - 0.5) * speed * 50;
+                    element.style.transform = `translate(${x}px, ${y}px) ${element.style.transform || ''}`;
+                });
+            });
+            
+            // Enhanced navbar interactions
+            const navLinks = document.querySelectorAll('.nav-link-3d');
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.style.animation = 'pulse 0.5s';
+                });
+                
+                link.addEventListener('animationend', function() {
+                    this.style.animation = '';
+                });
+            });
+            
+            // Auto-hide alerts after 5 seconds
+            const alerts = document.querySelectorAll('.alert-3d');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.classList.remove('show');
+                        setTimeout(() => {
+                            if (alert.parentNode) {
+                                alert.remove();
+                            }
+                        }, 150);
+                    }
+                }, 5000);
+            });
+            
+            // Add loading states to buttons
+            const buttons = document.querySelectorAll('.btn-3d');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (this.type === 'submit') {
+                        this.innerHTML = '<span class="spinner-3d me-2"></span>Processing...';
+                        this.disabled = true;
+                    }
+                });
+            });
+            
+            // Enhanced card hover effects
+            const cards = document.querySelectorAll('.card-3d');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.animation = 'glow-pulse 1s infinite alternate';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.animation = '';
+                });
+            });
+        });
+        
+        // Add CSS keyframes dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+            
+            @keyframes glow-pulse {
+                0% { box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+                100% { box-shadow: 0 25px 50px rgba(40, 167, 69, 0.3); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>
