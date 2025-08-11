@@ -104,9 +104,7 @@ def indian_date_filter(utc_datetime):
     return 'N/A'
 
 # Routes
-@app.route('/')
-def index():
-    return render_template('index.html')
+
 
 @app.route('/employee', methods=['GET', 'POST'])
 def employee_portal():
