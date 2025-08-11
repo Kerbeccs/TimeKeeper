@@ -284,14 +284,14 @@
                                 <td>{{ time_log.date }}</td>
                                 <td>{{ employee.name }}</td>
                                 <td>{{ employee.phone_number }}</td>
-                                <td>{{ time_log.login_time.strftime('%H:%M:%S') if time_log.login_time else '' }}</td>
-                                <td>
-                                    {% if time_log.logout_time %}
-                                        {{ time_log.logout_time.strftime('%H:%M:%S') }}
-                                    {% else %}
-                                        <span class="status-active">Still working</span>
-                                    {% endif %}
-                                </td>
+                                <td>{{ time_log.login_time|indian_time_only }}</td>
+<td>
+    {% if time_log.logout_time %}
+        {{ time_log.logout_time|indian_time_only }}
+    {% else %}
+        <span class="status-active">Still working</span>
+    {% endif %}
+</td>
                                 <td>
                                     {% if time_log.total_hours > 0 %}
                                         {{ "%.2f"|format(time_log.total_hours) }}h
